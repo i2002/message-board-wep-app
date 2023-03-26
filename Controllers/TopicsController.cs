@@ -56,8 +56,10 @@ namespace MessageBoard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,CreatedDate,UpdatedDate,Content,Category")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,Category")] Topic topic)
         {
+            topic.CreatedDate = DateTime.Now;
+            topic.UpdatedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(topic);
@@ -94,6 +96,8 @@ namespace MessageBoard.Controllers
             {
                 return NotFound();
             }
+
+            topic.UpdatedDate = DateTime.Now;
 
             if (ModelState.IsValid)
             {
