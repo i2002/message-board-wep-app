@@ -4,9 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@*<h1>Details</h1>*@
 
-<div>
+@*<div>
     <h4>Topic</h4>
     <hr />
     <dl class="row">
@@ -41,7 +41,17 @@
             @Html.DisplayFor(model => model.Category)
         </dd>
     </dl>
+</div>*@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
+        <p class="card-text" style="white-space: pre">@Html.DisplayFor(model => model.Content)</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">Updated at @Html.DisplayFor(model => model.UpdatedDate)</small>
+    </div>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
