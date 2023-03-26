@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MessageBoard.Data;
 using MessageBoard.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 
 namespace MessageBoard.Controllers
 {
@@ -20,11 +21,21 @@ namespace MessageBoard.Controllers
         }
 
         // GET: Topics
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.Topic != null ? 
-                          View(await _context.Topic.ToListAsync()) :
-                          Problem("Entity set 'MessageBoardContext.Topic'  is null.");
+            if (_context.Topic == null)
+            {
+                return Problem("Entity set 'MessageBoardContext.Topic'  is null.");
+            }
+
+            var topics = from t in _context.Topic select t;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                topics = topics.Where(t => t.Title!.Contains(searchString));
+            }
+
+            return View(await topics.ToListAsync());
         }
 
         // GET: Topics/Details/5
