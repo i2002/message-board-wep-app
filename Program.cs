@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MessageBoard.Data;
+using MessageBoard.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MessageBoardContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MessageBoardContext") ?? throw new InvalidOperationException("Connection string 'MessageBoardContext' not found.")));
@@ -9,6 +10,13 @@ builder.Services.AddDbContext<MessageBoardContext>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
