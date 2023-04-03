@@ -23,6 +23,11 @@
             <th style="min-width: 20rem">
                 @Html.DisplayNameFor(model => model.Title)
             </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
@@ -39,7 +44,12 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+            </td>
+            <td>
+                @*<a asp-ction="Details" asp-route-id="@item.Id">*@
+                    @Html.DisplayFor(modelItem => item.User!.Name)
+                @*</a>*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)

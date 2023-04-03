@@ -20,5 +20,7 @@ namespace MessageBoard.Models
 
         public List<Comment>? Comments { get; set; }
         public int UserId { get; set; }
+        [DisplayName("Author")]
+        public User? User { get; set; }
     }
 }

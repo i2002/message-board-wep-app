@@ -64,6 +64,7 @@
                 <p class="card-text" style="white-space: pre">@comment.Text</p>
             </div>
             <div class="card-footer d-flex">
+                <small class="text-muted me-1">Created by @comment.User.Name,</small>
                 <small class="text-muted">Updated at @comment.UpdatedDate</small>
                 <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" asp-route-topicId="@Model.Id" class="ms-auto">Edit</a>
                 @*<a asp-controller="Comments" asp-action="Details" asp-route-id="@comment.Id" class="mx-2">Details</a>*@

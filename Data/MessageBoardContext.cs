@@ -15,5 +15,14 @@ namespace MessageBoard.Data
         }
 
         public DbSet<MessageBoard.Models.Topic> Topic { get; set; } = default!;
+
+        public DbSet<MessageBoard.Models.Comment> Comment { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Topic>().HasMany(t => t.Comments).WithOne(c => c.Topic);
+        }
+
+        public DbSet<MessageBoard.Models.User> User { get; set; } = default!;
     }
 }

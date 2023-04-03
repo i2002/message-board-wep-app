@@ -28,7 +28,7 @@ namespace MessageBoard.Controllers
                 return Problem("Entity set 'MessageBoardContext.Topic'  is null.");
             }
 
-            var topics = from t in _context.Topic select t;
+            var topics = from t in _context.Topic.Include(t => t.User) select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -48,7 +48,11 @@ namespace MessageBoard.Controllers
 
             var topic = await _context.Topic
                 .Include(t => t.Comments)
+                .ThenInclude(c => c.User)
+                .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            /*_context.Entry(topic).Collection(t => t.Comments).Load();*/
             if (topic == null)
             {
                 return NotFound();
@@ -60,6 +64,7 @@ namespace MessageBoard.Controllers
         // GET: Topics/Create
         public IActionResult Create()
         {
+            ViewData["Users"] = new SelectList(_context.User, "Id", "Name");
             return View();
         }
 
@@ -68,16 +73,18 @@ namespace MessageBoard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,Category")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,Category,UserId")] Topic topic)
         {
             topic.CreatedDate = DateTime.Now;
             topic.UpdatedDate = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 _context.Add(topic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Users"] = new SelectList(_context.User, "Id", "Name");
             return View(topic);
         }
 
@@ -94,6 +101,7 @@ namespace MessageBoard.Controllers
             {
                 return NotFound();
             }
+            ViewData["Users"] = new SelectList(_context.User, "Id", "Name", topic.UserId);
             return View(topic);
         }
 
@@ -102,7 +110,7 @@ namespace MessageBoard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,CreatedDate,UpdatedDate,Content,Category")] Topic topic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,CreatedDate,UpdatedDate,Content,Category,UserId")] Topic topic)
         {
             if (id != topic.Id)
             {
@@ -131,6 +139,7 @@ namespace MessageBoard.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Users"] = new SelectList(_context.User, "Id", "Name");
             return View(topic);
         }
 

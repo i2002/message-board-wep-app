@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MessageBoard.Models
 {
@@ -18,6 +19,7 @@ namespace MessageBoard.Models
         public int TopicId { get; set; }
         public Topic? Topic { get; set; }
         public int UserId { get; set; }
+        [DisplayName("Author")]
         public User? User { get; set; }
     }
 }
