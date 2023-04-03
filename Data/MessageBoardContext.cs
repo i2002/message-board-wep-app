@@ -24,5 +24,7 @@ namespace MessageBoard.Data
         }
 
         public DbSet<MessageBoard.Models.User> User { get; set; } = default!;
+
+        public DbSet<MessageBoard.Models.Announcement> Announcement { get; set; } = default!;
     }
 }

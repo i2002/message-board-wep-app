@@ -6,3 +6,12 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@foreach (var announcement in ViewBag.Announcements)
+{
+    <div class="alert alert-secondary alert-@(((Announcement)announcement).Severity)" role="alert">
+        @((announcement as Announcement)!.Content)
+    </div>
+}
+
+<a asp-controller="Topics" asp-action="Index" class="btn btn-primary">Browse topics</a>
