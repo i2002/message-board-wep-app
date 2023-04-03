@@ -1,0 +1,65 @@
+﻿@model MessageBoard.Models.Comment
+
+@{
+    ViewData["Title"] = "Create";
+    var topic = ViewData["Topic"] as Topic;   
+}
+
+<h1>Create</h1>
+
+@if (topic == null)
+{
+    <h4>Comment</h4>
+}
+else
+{
+    <h4>Reply in topic "@topic?.Title"</h4>
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-route-replyTopicId="@topic?.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+@*            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" class="form-control" />
+                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div>*@
+            @if(topic == null)
+            {
+                <div class="form-group">
+                    <label asp-for="TopicId" class="control-label"></label>
+                    <select asp-for="TopicId" class="form-control" asp-items="ViewBag.TopicId"></select>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @if(topic == null)
+    {
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-controller="Topics" asp-action="Details" asp-route-id="@topic?.Id">Back to "@topic?.Title"</a>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

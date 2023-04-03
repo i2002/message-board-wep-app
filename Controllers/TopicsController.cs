@@ -47,6 +47,7 @@ namespace MessageBoard.Controllers
             }
 
             var topic = await _context.Topic
+                .Include(t => t.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (topic == null)
             {
